@@ -1,24 +1,24 @@
 'use strict';
 
 const logger = require('../lib/logger');
-const Track = require('../model/track');
+const Dragon = require('../model/dragon');
 const storage = require('../lib/storage');
 
-module.exports = function routeTrack(router) {
-  router.post('/api/v1/track', (req, res) => {
-    logger.log(logger.INFO, 'ROUTE-TRACK: POST /api/v1/trakc');
+module.exports = function routeDragon(router) {
+  router.post('/api/v1/dragon', (req, res) => {
+    logger.log(logger.INFO, 'ROUTE-DRAGON: POST /api/v1/dragon');
 
     try {
-      const newTrack = new Track(req.body.title, req.body.content);
-      storage.create('Track', newTrack)
-        .then((track) => {
+      const newDragon = new Dragon(req.body.title, req.body.content);
+      storage.create('Dragon', newDragon)
+        .then((dragon) => {
           res.writeHead(201, { 'Content-Type': 'application/json' });
-          res.write(JSON.stringify(track));
+          res.write(JSON.stringify(dragon));
           res.end();
           return undefined;
         });
     } catch (err) {
-      logger.log(logger.ERROR, `ROUTE-NOTE: There was a bad request ${err}`);
+      logger.log(logger.ERROR, `ROUTE-DRAGON: There was a bad request ${err}`);
       res.writeHead(400, { 'Content-Type': 'text/plain' });
       res.write('Bad request');
       res.end();
@@ -27,19 +27,18 @@ module.exports = function routeTrack(router) {
     return undefined;
   });
 
-  router.get('/api/v1/track', (req, res) => {
+  router.get('/api/v1/dragon', (req, res) => {
     if (!req.url.query.id) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.write('Your request requires an id');
       res.end();
       return undefined;
     }
-    storage.fetchOne('Note', req.url.query.id)
+    storage.fetchOne('Dragon', req.url.query.id)
       .then((item) => {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(JSON.stringify(item));
         res.end();
-        return undefined;
       })
       .catch((err) => {
         logger.log(logger.ERROR, err, JSON.stringify(err));
