@@ -74,7 +74,7 @@ module.exports = function routeDragon(router) {
     return undefined;
   });
 
-  router.omit('/api/dragon', (req, res) => {
+  router.delete('/api/dragon', (req, res) => {
     logger.log('delete');
     if (!req.url.query.id) {
       res.writeHead(400, { 'Content-Type': 'text/plain' });
@@ -87,14 +87,14 @@ module.exports = function routeDragon(router) {
     try {
       storage.delete('Dragon', req.url.query.id)
         .then((message) => {
-          res.writeHead(204, { 'Content-Type': 'text/plain'});
+          res.writeHead(204, { 'Content-Type': 'text/plain' });
           res.write(message);
           res.end();
           return undefined;
         });
     } catch (err) {
       logger.log(logger.ERRO, `DRAGON-ROUTE - Bad Request ${err}`);
-      res.writeHead(400, { 'Content-Type': 'text/plain'});
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
       res.write('Bad delete request');
       res.end();
       return undefined;
@@ -111,7 +111,7 @@ module.exports = function routeDragon(router) {
       })
       .catch((err) => {
         logger.log(logger.ERROR, err, JSON.stringify(err));
-        res.writeHead(404, { 'Content-Type': 'text/plain'});
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.write('Resource not found');
         res.end();
       });
